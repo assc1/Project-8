@@ -1,0 +1,42 @@
+Create an Ubuntu Server 20.04 EC2 instance and name it Project-8-apache-lb
+connect into the server and update
+sudo apt update
+Open TCP port 80 on the server(Project-8-apache-lb)
+Install Apache Load Balancer on Project-8-apache-lb
+sudo apt update
+sudo apt install apache2 -y
+sudo apt-get install libxml2-dev
+Enable following modules;
+sudo a2enmod rewrite
+sudo a2enmod proxy
+sudo a2enmod proxy_balancer
+sudo a2enmod proxy_http
+sudo a2enmod headers
+sudo a2enmod lbmethod_bytraffic
+Restart apache2 service to make sure everything is installed and enabled.
+sudo systemctl restart apache2
+check apache status make sure its running and active
+sudo systemctl status apache2
+Configure load balancing
+sudo vi /etc/apache2/sites-available/000-default.conf
+copy and paste configuration
+replace ip address for both webserver1 and webserver2.
+save and exite
+restart apache2
+sudo systemctl restart apache2
+Verify that our configuration works by accessing public ip
+screenshot and update steps
+http://3.14.12.143.index.php
+sudo unmount -f /var/log/http.
+refresh your browser page/ 3 times
+check traffic distribution by making sure both servers receive HTTP GET requests from your LB – new records must appear in each server’s log file.
+Configure Local DNS Names Resolution
+sudo vi /etc/hosts
+insert <WebServer1-Private-IP-Address> Web1
+<WebServer2-Private-IP-Address> Web2
+update your LB config file with those names instead of IP addresses
+BalancerMember http://Web1:80 loadfactor=5 timeout=1
+BalancerMember http://Web2:80 loadfactor=5 timeout=1
+try the curl cmds 
+curl http://Web1 or curl http://Web2
+screenshot and update
